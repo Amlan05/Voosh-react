@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../Store/actions';
 import axios from 'axios';
 
@@ -9,16 +9,12 @@ const Profile = () => {
 
   const navigate = useNavigate()
   const accesstoken = localStorage.getItem("accesstoken")
-  const isLoggedIn = useSelector(state => state.isLoggedIn);
   const [userData, setUserData] = useState({})
   const dispatch = useDispatch();
 
   useEffect(()=>{
 
-    if(!isLoggedIn){
-      navigate('/auth')
-    }
-    else{
+   
       const profileData = async() => {
         try{
           const response = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
@@ -34,7 +30,7 @@ const Profile = () => {
         }
       }
       profileData();
-    }
+    
   
 }, [])
 
