@@ -1,37 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../Store/actions';
 import axios from 'axios';
 
 const Profile = () => {
-  const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
-  const [userData, setUserData] = useState({});
+
+  const navigate = useNavigate()
+  const accesstoken = localStorage.getItem("accesstoken")
+  const [userData, setUserData] = useState({})
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const response = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        });
-        setUserData(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  useEffect(()=>{
 
-    fetchProfileData();
-  }, []);
+   
+      const profileData = async() => {
+        try{
+          const response = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
+            headers: {
+              Authorization: `Bearer ${accesstoken}`
+            }
+          });
+          console.log(response.data)
+          setUserData(response.data)
+        }
+        catch(err){
+          return console.error(err)
+        }
+      }
+      profileData();
+    
+  
+}, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    dispatch(logout());
-    navigate('/auth');
+    localStorage.removeItem('accesstoken')
+    localStorage.removeItem('refreshtoken')
+    dispatch(logout())
+    navigate('/auth')
   };
 
   return (
